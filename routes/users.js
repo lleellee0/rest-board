@@ -10,6 +10,20 @@ let connection = mysql.createConnection({
 
 let salt = 'ssssaalllltt!';
 
+
+// sign with default (HMAC SHA256)
+var jwt = require('jsonwebtoken');
+var fs = require('fs');
+
+// sign with RSA SHA256
+var cert = fs.readFileSync('private.key');  // get private key
+
+// sign asynchronously
+// jwt.sign({ foo: 'bar' }, cert, { algorithm: 'RS256' }, function(err, token) {
+//   console.log(token);
+// });
+
+// DB 연결
 connection.connect(function(err) {
     if (err) {
         console.error('mysql connection error');
