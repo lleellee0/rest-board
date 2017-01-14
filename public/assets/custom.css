@@ -1,3 +1,7 @@
 .selected {
   color: #983456 !important;
 }
+
+#pjax-target {
+  min-height: 100%;
+}
