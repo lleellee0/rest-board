@@ -1,5 +1,7 @@
 ﻿CREATE DATABASE first_rest;
 
+USE first_rest;
+
 CREATE TABLE users (
 id int primary key auto_increment,
 user_id varchar(30) unique,
@@ -12,4 +14,11 @@ id int primary key auto_increment,
 users_id int,
 title varchar(255),
 content text
+);
+
+CREATE TABLE token (
+id int primary key auto_increment,
+users_id int,
+token tinytext,
+exp timestamp
 );

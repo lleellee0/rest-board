@@ -45,10 +45,12 @@ router.get('/login-check', function(req, res, next) {
   let user_id = req.query.user_id;
   let password = req.query.password;
 
-  console.log(user_id);
-
   connection.query('SELECT id, user_id, nickname FROM users WHERE user_id=? AND password=password(?)', [user_id, password + salt], function(err, result) {
-    res.json(result);
+    jwt.sign(result[0], cert, { algorithm: 'RS256' }, function(err, token) {
+      result[0].token = token;
+      result[0].token_exp = Math.floor(Date.now() / 1000) + (60 * 60);
+      res.json(result[0]);
+    });
   });
 });
 
@@ -60,8 +62,6 @@ router.get('/:id', function(req, res, next) {
     res.json(result);
   });
 });
-
-
 
 // 회원 가입 (JSON 데이터 전달 필요)
 // parameter : {"user_id":"유저아이디","password":"유저비밀번호","nickname":"유저닉네임"}
