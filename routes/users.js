@@ -15,8 +15,10 @@ let salt = 'ssssaalllltt!';
 var jwt = require('jsonwebtoken');
 var fs = require('fs');
 
-// sign with RSA SHA256
-var cert = fs.readFileSync('private.key');  // get private key
+// sign with RSA SHA256 (2048bit의 키 길이)
+var privateKey = fs.readFileSync('private.key');  // get private key
+var publicKey = fs.readFileSync('public.pem');  // get public key
+
 
 // sign asynchronously
 // jwt.sign({ foo: 'bar' }, cert, { algorithm: 'RS256' }, function(err, token) {
@@ -46,7 +48,11 @@ router.get('/login-check', function(req, res, next) {
   let password = req.query.password;
 
   connection.query('SELECT id, user_id, nickname FROM users WHERE user_id=? AND password=password(?)', [user_id, password + salt], function(err, result) {
-    jwt.sign(result[0], cert, { algorithm: 'RS256' }, function(err, token) {
+    jwt.sign(result[0], privateKey, { algorithm: 'RS256' }, function(err, token) {
+      console.log(token);
+      jwt.verify(token, publicKey, function(err, decoded) {
+        console.log(decoded);
+      });
       result[0].token = token;
       result[0].token_exp = Math.floor(Date.now() / 1000) + (60 * 60);
       res.json(result[0]);
