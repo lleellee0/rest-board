@@ -1,38 +1,18 @@
 var express = require('express');
 var router = express.Router();
 
-var mysql = require('mysql');
-let connection = mysql.createConnection({
-  user: 'root',
-  password: 'mysql123',
-  database: 'first_rest'
-});
+// DB 연결
+const connection = require('./conf/db-con');
 
-let salt = 'ssssaalllltt!';
-
+// 보안관련 설정
+const security = require('./conf/security');
+const salt = security.salt;
+const privateKey = security.privateKey;
+const publicKey = security.publicKey;
 
 // sign with default (HMAC SHA256)
 var jwt = require('jsonwebtoken');
-var fs = require('fs');
 
-// sign with RSA SHA256 (2048bit의 키 길이)
-var privateKey = fs.readFileSync('private.key');  // get private key
-var publicKey = fs.readFileSync('public.pem');  // get public key
-
-
-// sign asynchronously
-// jwt.sign({ foo: 'bar' }, cert, { algorithm: 'RS256' }, function(err, token) {
-//   console.log(token);
-// });
-
-// DB 연결
-connection.connect(function(err) {
-    if (err) {
-        console.error('mysql connection error');
-        console.error(err);
-        throw err;
-    }
-});
 
 // 전체 조회
 router.get('/all', function(req, res, next) {
