@@ -59,7 +59,7 @@ router.put('/:id', securityApi.authCheckByToken, function(req, res, next) {
   let content = req.body.content;
   let token = req.query.access_token;
   let users_id = req.body.users_id;
-  connection.query('DELETE FROM board WHERE id = ? AND users_id = ?', [id, users_id], function(err, result) {
+  connection.query('UPDATE board SET title = ?, content = ? WHERE id = ? AND users_id = ?', [title, content, id, users_id], function(err, result) {
     if(err) throw error;
     if(result.affectedRows === 1)
       res.status(200).send();
