@@ -19,6 +19,6 @@ content text
 CREATE TABLE token (
 id int primary key auto_increment,
 users_id int,
-token tinytext,
-exp timestamp
+token varchar(255),
+exp int
 );

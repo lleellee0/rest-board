@@ -7,12 +7,7 @@ const connection = require('./conf/db-con');
 // 보안관련 설정
 const security = require('./conf/security');
 const salt = security.salt;
-const privateKey = security.privateKey;
-const publicKey = security.publicKey;
-
-// sign with default (HMAC SHA256)
-var jwt = require('jsonwebtoken');
-
+const crypto = require('crypto');
 
 // 전체 조회
 router.get('/all', function(req, res, next) {
@@ -26,16 +21,17 @@ router.get('/all', function(req, res, next) {
 router.get('/login-check', function(req, res, next) {
   let user_id = req.query.user_id;
   let password = req.query.password;
+  let nonce = req.query.nonce;
+
+  nonce = crypto.createHash('sha256').update(nonce).digest('hex');
 
   connection.query('SELECT id, user_id, nickname FROM users WHERE user_id=? AND password=password(?)', [user_id, password + salt], function(err, result) {
-    jwt.sign(result[0], privateKey, { algorithm: 'RS256' }, function(err, token) {
-      console.log(token);
-      jwt.verify(token, publicKey, function(err, decoded) {
-        console.log(decoded);
-      });
-      result[0].token = token;
-      result[0].token_exp = Math.floor(Date.now() / 1000) + (60 * 60);
-      res.json(result[0]);
+    let row = result[0];
+    row.token = nonce;
+    row.token_exp = Math.floor(Date.now() / 1000) + (60 * 60);
+    connection.query('INSERT INTO token (users_id, token, exp) VALUES (?, ?, ?)', [row.id, row.token, row.token_exp], function(err, result) {
+      if(err) throw err;
+      res.json(row);
     });
   });
 });
