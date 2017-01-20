@@ -13,7 +13,8 @@ CREATE TABLE board (
 id int primary key auto_increment,
 users_id int,
 title varchar(255),
-content text
+content text,
+write_time datetime default now()
 );
 
 CREATE TABLE token (
