@@ -1,4 +1,4 @@
-var express = require('express');
+const express = require('express');
 
 // DB 연결
 const connection = require('../conf/db-con');
