@@ -1,0 +1,22 @@
+<% if(!req.header('X-PJAX')) { %>
+  <%- include('header.ejs'); %>
+<% } %>
+
+<section class="mbr-section table1" id="table1-f" style="background-color: rgb(255, 255, 255); padding-top: 120px; padding-bottom: 120px;">
+
+
+
+    <div class="container">
+        <h3 class="mbr-section-title display-2">USERS</h3>
+    </div>
+
+    <div class="container table-wrapper" data-search="true" search-text="Search:" info1-text="Showing" info2-text="entries" info3-text="(filtered from" info4-text="total entries)">
+
+        <table class="table" cellspacing="0" width="100%"><thead><tr><th>Name</th><th>Age</th><th>Date</th><th>Salary</th></tr></thead><tbody><tr><td>Jeanna Schmal</td><td>44</td><td>2016-10-17</td><td>$317.000</td></tr><tr><td>Caren Rials</td><td>35</td><td>2013-04-12</td><td>$445.500</td></tr><tr><td>Leon Rogol</td><td>66</td><td>2016-05-22</td><td>$152.558</td></tr><tr><td>Shala Barrera</td><td>70</td><td>2016-05-15</td><td>$459.146</td></tr></tbody></table>
+
+    </div>
+</section>
+
+<% if(!req.header('X-PJAX')) { %>
+  <%- include('footer.ejs'); %>
+<% } %>
