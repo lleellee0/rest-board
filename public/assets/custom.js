@@ -1,3 +1,9 @@
+var nonce = "1234567890!@#$%^&*";
+
+$('body').on('click', function(event) {
+  nonce = sha256(nonce + (event.clientX / event.clientY) );
+});
+
 $('a.nav-link').on('click', function(event) {
   $('a.nav-link').removeClass('selected');
   $(event.target).addClass('selected');
@@ -14,7 +20,6 @@ $('.modalBackground').on('click', function(event) {
   hideLoginModal();
   event.stopPropagation();
 });
-
 
 const modalBackground = $('.modalBackground');
 const fixedModal = $('#fixedModal');
