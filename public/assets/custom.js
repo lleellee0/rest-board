@@ -38,3 +38,36 @@ const hideLoginModal = function() {
   fixedModal.addClass('hidden');
   fixedModal.addClass('opacityZero');
 }
+
+const password = document.getElementById("signup_password");
+const confirmPassword = document.getElementById("signup_confirm_password");
+
+const processSignup = function() {
+  sendSignupAjax();
+  return false;
+}
+
+const validatePassword = function() {
+  if(password.value != confirmPassword.value) {
+    confirmPassword.setCustomValidity("Password Don't Match.");
+  } else {
+    confirmPassword.setCustomValidity("");
+  }
+}
+
+password.onchange = validatePassword;
+confirmPassword.onkeyup = validatePassword;
+
+
+const processLogin = function() {
+  sendLoginAjax();
+  return false;
+}
+
+const sendSignupAjax = function() {
+
+}
+
+const sendLoginAjax = function() {
+
+}
