@@ -13,9 +13,9 @@ exports.loginCheck = function(req, res, next) {
 
   nonce = crypto.createHash('sha256').update(nonce).digest('hex');
 
-  connection.query('SELECT id, user_id, nickname FROM users WHERE user_id=? AND password=password(?)', [user_id, password + salt], function(err, result) {
+  connection.query('SELECT id, password, user_id, nickname FROM users WHERE user_id=? AND password=password(?)', [user_id, password + salt], function(err, result) {
     let row = result[0];
-    row.token = nonce;
+    row.token = crypto.createHash('sha256').update(nonce + row.password).digest('hex');
     row.token_exp = Math.floor(Date.now() / 1000) + (60 * 60);
     connection.query('INSERT INTO token (users_id, token, exp) VALUES (?, ?, ?)', [row.id, row.token, row.token_exp], function(err, result) {
       if(err) throw err;

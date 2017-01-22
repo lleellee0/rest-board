@@ -1,4 +1,4 @@
-﻿CREATE DATABASE first_rest;
+CREATE DATABASE first_rest;
 
 USE first_rest;
 
