@@ -19,16 +19,16 @@
 <div id="fixedModal" class="centerBlock absoluteCenter isFixed isVariable modalBorder transitionOneSec hidden opacityZero">
   <div class="form">
     <form class="register-form modalForm" onsubmit="return processSignup();">
-      <input type="text" placeholder="ID" required/>
+      <input type="text" id="signup_id" placeholder="ID" required/>
       <input type="password" id="signup_password" placeholder="PASSWORD" required/>
       <input type="password" id="signup_confirm_password" placeholder="PASSWORD COMFIRM" required/>
-      <input type="text" placeholder="NICKNAME" required/>
+      <input type="text" id="signup_nickname" placeholder="NICKNAME" required/>
       <button type="submit">create</button>
       <p class="message">Already registered? <a href="#" class="preventDefault">Sign In</a></p>
     </form>
     <form class="login-form modalForm" onsubmit="return processLogin();">
-      <input type="text" placeholder="ID" required/>
-      <input type="password" placeholder="PASSWORD" required/>
+      <input type="text" id="login_id" placeholder="ID" required/>
+      <input type="password" id="login_password" placeholder="PASSWORD" required/>
       <button type="submit">login</button>
       <p class="message">Not registered? <a href="#" class="preventDefault">Create an account</a></p>
     </form>
