@@ -21,31 +21,44 @@ $('.modalBackground').on('click', function(event) {
   event.stopPropagation();
 });
 
-const modalBackground = $('.modalBackground');
-const fixedModal = $('#fixedModal');
-
+const $modalBackground = $('.modalBackground');
+const $fixedModal = $('#fixedModal');
+const $loadingDiv = $('.loadingDivWrapper');
 
 const showLoginModal = function() {
-  modalBackground.removeClass('hidden');
-  modalBackground.removeClass('opacityZero');
-  fixedModal.removeClass('hidden');
-  fixedModal.removeClass('opacityZero');
+  $modalBackground.removeClass('hidden');
+  $modalBackground.removeClass('opacityZero');
+  $fixedModal.removeClass('hidden');
+  $fixedModal.removeClass('opacityZero');
 }
 
 const hideLoginModal = function() {
-  modalBackground.addClass('hidden');
-  modalBackground.addClass('opacityZero');
-  fixedModal.addClass('hidden');
-  fixedModal.addClass('opacityZero');
+  $modalBackground.addClass('hidden');
+  $modalBackground.addClass('opacityZero');
+  $fixedModal.addClass('hidden');
+  $fixedModal.addClass('opacityZero');
+}
+
+const showLoadingDiv = function() {
+  $loadingDiv.removeClass('hidden');
+  $loadingDiv.removeClass('opacityZero');
+}
+
+const hideLoadingDiv = function() {
+  $loadingDiv.addClass('hidden');
+  $loadingDiv.addClass('opacityZero');
+}
+
+const addBlurAtDiv = function($div) {
+  $div.addClass('blur');
+}
+
+const removeBlurAtDiv = function($div) {
+  $div.removeClass('blur');
 }
 
 const password = document.getElementById("signup_password");
 const confirmPassword = document.getElementById("signup_confirm_password");
-
-const processSignup = function() {
-  sendSignupAjax();
-  return false;
-}
 
 const validatePassword = function() {
   if(password.value != confirmPassword.value) {
@@ -58,8 +71,16 @@ const validatePassword = function() {
 password.onchange = validatePassword;
 confirmPassword.onkeyup = validatePassword;
 
+const processSignup = function() {
+  showLoadingDiv();
+  addBlurAtDiv($fixedModal);
+  sendSignupAjax();
+  return false;
+}
 
 const processLogin = function() {
+  showLoadingDiv();
+  addBlurAtDiv($fixedModal);
   sendLoginAjax();
   return false;
 }

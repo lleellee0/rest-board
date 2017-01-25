@@ -66,3 +66,32 @@
 .opacityZero {
   opacity: 0;
 }
+
+.divCenterFixed {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+}
+
+.divCenter {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+}
+
+.loadingDivWrapper {
+  z-index: 4000;
+  width: 30%;
+  min-width: 500px;
+  height: 500px;
+}
+
+.blur {
+  -webkit-filter: blur(5px);
+  -moz-filter: blur(5px);
+  -o-filter: blur(5px);
+  -ms-filter: blur(5px);
+  filter: blur(5px);
+}
