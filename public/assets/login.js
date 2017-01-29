@@ -1,38 +1,35 @@
 const apiServerAddress = "";
 var nonce = "1234567890!@#$%^&*";
 
+$(document).ready(function() {
+  drawLoginButton();  // 토큰확인 후 로그인 or 로그아웃 표시
+});
+
 $('body').on('click', function(event) {
   nonce = sha256(nonce + (event.clientX / event.clientY) );
 });
 
-$('a.nav-link').on('click', function(event) {
-  $('a.nav-link').removeClass('selected');
-  $(event.target).addClass('selected');
-});
-
-$(document).pjax('a.nav-link', '#pjax-target');
-
 $('#loginButton').on('click', function(event) {
-  showLoginModal();
+  if(this.value === 'LOGIN')          // 로그인 모달 띄워주기(로그아웃 상태);
+    showLoginModal();
+  else if(this.value === 'LOGOUT') {  // 로그아웃 시키기(로그인 상태);
+    this.value = 'LOGIN';
+    localStorage.removeItem('session');
+  }
+
   event.stopPropagation();
 });
 
-$('.modalBackground').on('click', function(event) {
-  hideLoginModal();
-  event.stopPropagation();
-});
-
-// 로그인 모달과 로딩 모달에 대한 보여주기/감추기
-// DOM을 다시 탐색하지 않도록 const로 저장해둠.
-const $modalBackground = $('.modalBackground');
 const $fixedModal = $('#fixedModal');
-const $loadingDiv = $('.loadingDivWrapper');
 
 const showLoginModal = function() {
   $modalBackground.removeClass('hidden');
   $modalBackground.removeClass('opacityZero');
   $fixedModal.removeClass('hidden');
   $fixedModal.removeClass('opacityZero');
+  setTimeout(function() {
+    document.getElementById('login_id').focus();
+  }, 1000); // transition이 1초 걸려있기 때문에 1초 후 focus 해주어야한다.
 }
 
 const hideLoginModal = function() {
@@ -41,26 +38,6 @@ const hideLoginModal = function() {
   $fixedModal.addClass('hidden');
   $fixedModal.addClass('opacityZero');
 }
-
-const showLoadingDiv = function() {
-  $loadingDiv.removeClass('hidden');
-  $loadingDiv.removeClass('opacityZero');
-}
-
-const hideLoadingDiv = function() {
-  $loadingDiv.addClass('hidden');
-  $loadingDiv.addClass('opacityZero');
-}
-
-// blur 클래스에는 filter: blur(5px); 속성이 걸려있음.(custom.css 참고)
-const addBlurAtDiv = function($div) {
-  $div.addClass('blur');
-}
-
-const removeBlurAtDiv = function($div) {
-  $div.removeClass('blur');
-}
-
 
 // 비밀번호와 비밀번호 확인의 일치여부 확인
 const password = document.getElementById("signup_password");
@@ -96,7 +73,31 @@ const processLogin = function() {
 }
 
 const sendSignupAjax = function() {
+  const $registerForm = $('.register-form > input');
 
+  const regFormObject = {
+    user_id: $registerForm[0].value,
+    password: $registerForm[1].value,
+    nickname: $registerForm[3].value
+  };
+
+  $.ajax({
+    url: apiServerAddress + '/users',
+    method: 'POST',
+    data: regFormObject,
+    success: function(data) {
+      removeBlurAtDiv($fixedModal);
+      hideLoadingDiv();
+      hideLoginModal();
+      console.log('ok');
+    },
+    error: function(xhr, status, err) {
+      removeBlurAtDiv($fixedModal);
+      hideLoadingDiv();
+      // hideLoginModal();
+      alert('Signup fail cause DUPLICATE ID.\nPlease input Another ID.');
+    }
+  });
 }
 
 const sendLoginAjax = function() {
@@ -108,14 +109,47 @@ const sendLoginAjax = function() {
       removeBlurAtDiv($fixedModal);
       hideLoadingDiv();
       hideLoginModal();
-      console.log(data);
       // 1. 우측상단 LOGIN 버튼 변경
       // 2. token을 스토리지에 저장 (완료)
 
       localStorage.setItem('session', JSON.stringify(data));
+      drawLoginButton();
     },
     error: function(xhr, status, err) {
-      console.log(err);
+      removeBlurAtDiv($fixedModal);
+      hideLoadingDiv();
+      hideLoginModal();
+      alert('LOGIN FAIL.');
     }
-  })
+  });
 }
+
+const drawLoginButton = function() {
+  if(isValidToken())  // 로그인 상태
+    $('#loginButton').attr('value', 'LOGOUT');
+  else // 로그아웃 상태
+    $('#loginButton').attr('value', 'LOGIN');
+}
+
+const isValidToken = function() {
+  try {
+    let session = JSON.parse(localStorage.getItem('session'));
+    let now = Math.floor(Date.now() / 1000);
+
+    if(session.token_exp < now)
+      return false;
+    else
+      return true;
+  } catch(err) {
+    return false;
+  }
+}
+
+
+$('.message a').click(function(){
+   $('.modalForm').animate({height: "toggle", opacity: "toggle"}, "slow");
+});
+
+$('.preventDefault').on('click', function(event) {
+  event.preventDefault();
+});

@@ -40,6 +40,7 @@ exports.getUserInfo = function(req, res, next) {
 }
 
 exports.signUp = function(req, res, next) {
+  console.log(req.body);
   let user_id = req.body.user_id;
   let password = req.body.password;
   let nickname = req.body.nickname;
@@ -48,6 +49,6 @@ exports.signUp = function(req, res, next) {
     if(err === null)
       res.status(201).end();
     else
-      res.status(400).json({message: "insert fail"});
+      res.status(403).end();
   });
 }
