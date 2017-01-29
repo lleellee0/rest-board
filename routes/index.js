@@ -7,7 +7,7 @@ router.get('/', function(req, res, next) {
 });
 
 router.get('/board', function(req, res, next) {
-  res.render('board', {req: req});
+  res.render('board', {req: req, isViewer: false});
 });
 
 router.get('/users', function(req, res, next) {

@@ -1,4 +1,3 @@
-const apiServerAddress = "";
 var nonce = "1234567890!@#$%^&*";
 
 $(document).ready(function() {
