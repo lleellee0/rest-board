@@ -1,3 +1,21 @@
+let isPost = false;
+
+$('body').on('click', '.boardPost', function() {
+  // 글쓰기 모드
+  isPost = true;
+});
+
+$('body').on('click', '#correctButton', function() {
+  // 글수정 모드
+  isPost = false;
+
+  document.getElementById('postTitle').value = document.getElementById('modalTitle').innerHTML;
+  document.getElementById('postContent').innerHTML = document.getElementById('modalContent').innerHTML;
+
+  $('#viewerModal').modal('hide');
+  $('#postModal').modal('show');
+});
+
 const requestBoardListAjax = function() {
   showLoadingDiv();
   $.ajax({
@@ -40,6 +58,7 @@ $('#pjax-target').on('click', '.boardTitle', function(event) {
       hideLoadingDiv();
       document.getElementById('modalTitle').innerHTML = data.title;
       document.getElementById('modalContent').innerHTML = data.content;
+      document.getElementById('boardId').value = id;
     },
     error: function(xhr, status, err) {
       alert('Board list request fail.');
@@ -50,7 +69,10 @@ $('#pjax-target').on('click', '.boardTitle', function(event) {
 });
 
 $('body').on('click', '#postSubmit', function() {
-  sendPostAjax();
+  if(isPost)   // 글쓰기모드
+    sendPostAjax();
+  else         // 글수정모드
+    sendUpdateAjax();
 });
 
 const sendPostAjax = function() {
@@ -64,6 +86,35 @@ const sendPostAjax = function() {
   $.ajax({
     url: apiServerAddress + '/board/?access_token=' + JSON.parse(localStorage.getItem('session')).token,
     method: 'POST',
+    data: postObject,
+    success: function(data) {
+      hideLoadingDiv();
+
+      document.getElementById('postTitle').value = '';
+      document.getElementById('postContent').value = '';
+
+      $('#postModal').modal('hide');
+      setTimeout(function() {
+        $('#navBoard').click();
+      }, 500);
+    },
+    error: function(xhr, status, err) {
+      hideLoadingDiv();
+      alert(xhr.responseText);
+    }
+  });
+}
+const sendUpdateAjax = function() {
+  showLoadingDiv();
+  const postObject = {
+    title: document.getElementById('postTitle').value,
+    content: document.getElementById('postContent').value
+  };
+  console.log('send post');
+
+  $.ajax({
+    url: apiServerAddress + '/board/' + document.getElementById('boardId').value + '?access_token=' + JSON.parse(localStorage.getItem('session')).token,
+    method: 'PUT',
     data: postObject,
     success: function(data) {
       hideLoadingDiv();
