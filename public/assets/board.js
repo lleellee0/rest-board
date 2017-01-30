@@ -49,7 +49,7 @@ $('#pjax-target').on('click', '.boardTitle', function(event) {
  event.preventDefault();
 });
 
-$('#postSubmit').on('click', function() {
+$('body').on('click', '#postSubmit', function() {
   sendPostAjax();
 });
 
@@ -59,6 +59,7 @@ const sendPostAjax = function() {
     title: document.getElementById('postTitle').value,
     content: document.getElementById('postContent').value
   };
+  console.log('send post');
 
   $.ajax({
     url: apiServerAddress + '/board/?access_token=' + JSON.parse(localStorage.getItem('session')).token,
@@ -71,6 +72,9 @@ const sendPostAjax = function() {
       document.getElementById('postContent').value = '';
 
       $('#postModal').modal('hide');
+      setTimeout(function() {
+        $('#navBoard').click();
+      }, 500);
     },
     error: function(xhr, status, err) {
       hideLoadingDiv();
