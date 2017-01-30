@@ -1,4 +1,5 @@
 let isPost = false;
+let targetId = 0;
 
 $('body').on('click', '.boardPost', function() {
   // 글쓰기 모드
@@ -58,7 +59,7 @@ $('#pjax-target').on('click', '.boardTitle', function(event) {
       hideLoadingDiv();
       document.getElementById('modalTitle').innerHTML = data.title;
       document.getElementById('modalContent').innerHTML = data.content;
-      document.getElementById('boardId').value = id;
+      targetId = id;
     },
     error: function(xhr, status, err) {
       alert('Board list request fail.');
@@ -113,7 +114,7 @@ const sendUpdateAjax = function() {
   console.log('send post');
 
   $.ajax({
-    url: apiServerAddress + '/board/' + document.getElementById('boardId').value + '?access_token=' + JSON.parse(localStorage.getItem('session')).token,
+    url: apiServerAddress + '/board/' + targetId + '?access_token=' + JSON.parse(localStorage.getItem('session')).token,
     method: 'PUT',
     data: postObject,
     success: function(data) {
