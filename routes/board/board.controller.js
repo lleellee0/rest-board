@@ -7,9 +7,10 @@ exports.getUsersIdByToken = function(req, res, next) {
   let token = req.query.access_token;
   connection.query('SELECT * FROM token WHERE token = ? ORDER BY exp DESC', [token], function(err, result) {
     let now = Math.floor(Date.now() / 1000);
-    if(result[0].exp < now)
+    if(result[0].exp < now) {
       res.status(403).end('session expired.');
-    return;
+      return;
+    }
 
     req.body.users_id = result[0].users_id;
     next();
