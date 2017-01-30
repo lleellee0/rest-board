@@ -48,3 +48,33 @@ $('#pjax-target').on('click', '.boardTitle', function(event) {
 
  event.preventDefault();
 });
+
+$('#postSubmit').on('click', function() {
+  sendPostAjax();
+});
+
+const sendPostAjax = function() {
+  showLoadingDiv();
+  const postObject = {
+    title: document.getElementById('postTitle').value,
+    content: document.getElementById('postContent').value
+  };
+
+  $.ajax({
+    url: apiServerAddress + '/board/?access_token=' + JSON.parse(localStorage.getItem('session')).token,
+    method: 'POST',
+    data: postObject,
+    success: function(data) {
+      hideLoadingDiv();
+
+      document.getElementById('postTitle').value = '';
+      document.getElementById('postContent').value = '';
+
+      $('#postModal').modal('hide');
+    },
+    error: function(xhr, status, err) {
+      hideLoadingDiv();
+      alert(xhr.responseText);
+    }
+  });
+}
