@@ -82,8 +82,6 @@ const sendPostAjax = function() {
     title: document.getElementById('postTitle').value,
     content: document.getElementById('postContent').value
   };
-  console.log('send post');
-
   $.ajax({
     url: apiServerAddress + '/board/?access_token=' + JSON.parse(localStorage.getItem('session')).token,
     method: 'POST',
@@ -111,8 +109,6 @@ const sendUpdateAjax = function() {
     title: document.getElementById('postTitle').value,
     content: document.getElementById('postContent').value
   };
-  console.log('send post');
-
   $.ajax({
     url: apiServerAddress + '/board/' + targetId + '?access_token=' + JSON.parse(localStorage.getItem('session')).token,
     method: 'PUT',
@@ -124,6 +120,31 @@ const sendUpdateAjax = function() {
       document.getElementById('postContent').value = '';
 
       $('#postModal').modal('hide');
+      setTimeout(function() {
+        $('#navBoard').click();
+      }, 500);
+    },
+    error: function(xhr, status, err) {
+      hideLoadingDiv();
+      alert(xhr.responseText);
+    }
+  });
+}
+
+$('body').on('click', '#deleteButton', function() {
+  sendDeleteAjax();
+});
+
+const sendDeleteAjax = function() {
+  showLoadingDiv();
+
+  $.ajax({
+    url: apiServerAddress + '/board/' + targetId + '?access_token=' + JSON.parse(localStorage.getItem('session')).token,
+    method: 'DELETE',
+    success: function(data) {
+      hideLoadingDiv();
+
+      $('#viewerModal').modal('hide');
       setTimeout(function() {
         $('#navBoard').click();
       }, 500);

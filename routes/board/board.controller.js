@@ -80,6 +80,6 @@ exports.deleteArticle = function(req, res, next) {
     if(result.affectedRows === 1)
       res.status(200).send();
       else
-      res.status(403).send();
+      res.status(403).send('Token Mismatch.');
   });
 }
