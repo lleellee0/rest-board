@@ -7,7 +7,8 @@ const requestBoardListAjax = function() {
       hideLoadingDiv();
 
       data.result_list.forEach(function(element, index, array) {
-        array[index].title = '<a href="/board/' + array[index].id + '/viewer" class="boardTitle" data-id="' + array[index].id + '" data-toggle="modal" data-target="#boardModal">' + array[index].title + '</a>';
+        array[index].title = '<a href="/board/' + array[index].id + '/viewer" class="boardTitle" data-id="' + array[index].id +
+         '" data-toggle="modal" data-target="#viewerModal">' + array[index].title + '</a>';
       });
 
       $('#boardTable').DataTable( {

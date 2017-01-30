@@ -99,3 +99,22 @@
 #loginButton {
   width: 130px;
 }
+
+.boardPost {
+  background-color: #FFF0A5;
+  transition: 1s;
+  float: right;
+}
+
+.boardPost:hover {
+  color: #333333;
+  background-color: #FFFC88;
+}
+
+#postTitle {
+  width: 90%;
+}
+
+#postContent {
+  width: 100%;
+}
