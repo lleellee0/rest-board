@@ -58,7 +58,7 @@ $('#pjax-target').on('click', '.boardTitle', function(event) {
     success: function(data) {
       hideLoadingDiv();
       document.getElementById('modalTitle').innerHTML = data.title;
-      document.getElementById('modalContent').innerHTML = data.content;
+      document.getElementById('modalContent').innerHTML = (data.content).replace(/\n/g, "<br>");
       targetId = id;
     },
     error: function(xhr, status, err) {
