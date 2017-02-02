@@ -6,6 +6,12 @@ const security = require('../conf/security');
 const salt = security.salt;
 const crypto = require('crypto');
 
+exports.getUsersList = function(req, res, next) {
+  connection.query('SELECT id, nickname FROM users', function(err, result) {
+    res.json(result);
+  });
+}
+
 exports.loginCheck = function(req, res, next) {
   let user_id = req.query.user_id;
   let password = req.query.password;

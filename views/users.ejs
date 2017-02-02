@@ -12,10 +12,19 @@
 
     <div class="container table-wrapper" data-search="true" search-text="Search:" info1-text="Showing" info2-text="entries" info3-text="(filtered from" info4-text="total entries)">
 
-        <table class="table" cellspacing="0" width="100%"><thead><tr><th>Name</th><th>Age</th><th>Date</th><th>Salary</th></tr></thead><tbody><tr><td>Jeanna Schmal</td><td>44</td><td>2016-10-17</td><td>$317.000</td></tr><tr><td>Caren Rials</td><td>35</td><td>2013-04-12</td><td>$445.500</td></tr><tr><td>Leon Rogol</td><td>66</td><td>2016-05-22</td><td>$152.558</td></tr><tr><td>Shala Barrera</td><td>70</td><td>2016-05-15</td><td>$459.146</td></tr></tbody></table>
-
+      <table class="table" id="usersTable" cellspacing="0" width="100%">
+        <thead><tr><th style="width:50%;">#</th><th style="width:50%;">Nickname</th></tr></thead>
+        <tbody></tbody>
+      </table>
     </div>
 </section>
+
+<script>
+$(document).ready(function() {
+  if($('#usersTable tbody').html() === "")  // 뒤로 가기로 /users에 들어올 경우 계속 생성되는 것을 방지
+    requestUsersListAjax();
+});
+</script>
 
 <% if(!req.header('X-PJAX')) { %>
   <%- include('footer.ejs'); %>
