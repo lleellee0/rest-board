@@ -7,19 +7,50 @@
     </div>
 </footer>
 
+<div class="modalBackground transitionOneSec hidden opacityZero"></div>
+<div class="loadingDivWrapper divCenterFixed transitionOneSec hidden opacityZero">
+  <div class="loading-bro divCenterFixed">
+    <h1>Loading...</h1>
+    <svg id="load" x="0px" y="0px" viewBox="0 0 150 150">
+      <circle id="loading-inner" cx="75" cy="75" r="60"/>
+   </svg>
+  </div>
+</div>
+<div id="fixedModal" class="centerBlock absoluteCenter isFixed isVariable modalBorder transitionOneSec hidden opacityZero">
+  <div class="form">
+    <form class="register-form modalForm" onsubmit="return processSignup();">
+      <input type="text" id="signup_id" placeholder="ID" required/>
+      <input type="password" id="signup_password" placeholder="PASSWORD" required/>
+      <input type="password" id="signup_confirm_password" placeholder="PASSWORD COMFIRM" required/>
+      <input type="text" id="signup_nickname" placeholder="NICKNAME" required/>
+      <button type="submit">create</button>
+      <p class="message">Already registered? <a href="#" class="preventDefault">Sign In</a></p>
+    </form>
+    <form class="login-form modalForm" onsubmit="return processLogin();">
+      <input type="text" id="login_id" placeholder="ID" required/>
+      <input type="password" id="login_password" placeholder="PASSWORD" required/>
+      <button type="submit">login</button>
+      <p class="message">Not registered? <a href="#" class="preventDefault">Create an account</a></p>
+    </form>
+  </div>
+</div>
 
-  <script src="assets/web/assets/jquery/jquery.min.js"></script>
-  <script src="assets/tether/tether.min.js"></script>
-  <script src="assets/bootstrap/js/bootstrap.min.js"></script>
-  <script src="assets/smooth-scroll/SmoothScroll.js"></script>
-  <script src="assets/viewportChecker/jquery.viewportchecker.js"></script>
-  <script src="assets/dropdown/js/script.min.js"></script>
-  <script src="assets/touchSwipe/jquery.touchSwipe.min.js"></script>
-  <script src="assets/dataTables/jquery.dataTables.min.js"></script>
-  <script src="assets/dataTables/dataTables.bootstrap4.min.js"></script>
-  <script src="assets/theme/js/script.js"></script>
-  <script src="assets/jquery.pjax.js"></script>
-  <script src="assets/custom.js"></script>
+
+  <script src="/assets/tether/tether.min.js"></script>
+  <script src="/assets/bootstrap/js/bootstrap.min.js"></script>
+  <script src="/assets/smooth-scroll/SmoothScroll.js"></script>
+  <script src="/assets/viewportChecker/jquery.viewportchecker.js"></script>
+  <script src="/assets/dataTables/jquery.dataTables.min.js"></script>
+  <script src="/assets/dataTables/dataTables.bootstrap4.min.js"></script>
+  <script src="/assets/dropdown/js/script.min.js"></script>
+  <script src="/assets/touchSwipe/jquery.touchSwipe.min.js"></script>
+  <script src="/assets/theme/js/script.js"></script>
+  <script src="/assets/sha256.js"></script>
+  <script src="/assets/jquery.pjax.js"></script>
+  <script src="/assets/common.js"></script>
+  <script src="/assets/login.js"></script>
+  <script src="/assets/board.js"></script>
+  <script src="/assets/users.js"></script>
 
 
   <input name="animation" type="hidden">

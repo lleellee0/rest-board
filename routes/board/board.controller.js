@@ -6,6 +6,12 @@ const connection = require('../conf/db-con');
 exports.getUsersIdByToken = function(req, res, next) {
   let token = req.query.access_token;
   connection.query('SELECT * FROM token WHERE token = ? ORDER BY exp DESC', [token], function(err, result) {
+    let now = Math.floor(Date.now() / 1000);
+    if(result[0].exp < now) {
+      res.status(403).end('session expired.');
+      return;
+    }
+
     req.body.users_id = result[0].users_id;
     next();
   });
@@ -23,7 +29,7 @@ exports.writeArticle = function(req, res, next) {
 }
 
 exports.getList = function(req, res, next) {
-  connection.query('SELECT board.id, board.title, board.title, users.nickname, board.write_time ' +
+  connection.query('SELECT board.id, board.title, board.title, users.nickname, DATE_FORMAT(board.write_time, "%Y-%m-%d %T") AS write_time ' +
                   'FROM board ' +
                   'LEFT JOIN users ON board.users_id = users.id ' +
                   'ORDER BY board.id DESC', function(err, result) {
@@ -37,8 +43,16 @@ exports.getList = function(req, res, next) {
 exports.getArticle = function(req, res, next) {
   let id = req.params.id;
 
-  connection.query('SELECT * FROM board WHERE id = ?', id, function(err, result) {
+  connection.query('SELECT id, title, content, DATE_FORMAT(board.write_time, "%Y-%m-%d %T") AS write_time FROM board WHERE id = ?', id, function(err, result) {
     res.json(result[0]);
+  });
+}
+
+exports.getArticleWithViewer = function(req, res, next) {
+  let id = req.params.id;
+
+  connection.query('SELECT id, title, content, DATE_FORMAT(board.write_time, "%Y-%m-%d %T") AS write_time FROM board WHERE id = ?', id, function(err, result) {
+    res.render('board', {req: req, isViewer: true, title: result[0].title, content: result[0].content});
   });
 }
 
@@ -53,7 +67,7 @@ exports.updateArticle = function(req, res, next) {
     if(result.affectedRows === 1)
       res.status(200).send();
       else
-      res.status(403).send();
+      res.status(403).send('Token Mismatch.');
   });
 }
 
@@ -66,6 +80,6 @@ exports.deleteArticle = function(req, res, next) {
     if(result.affectedRows === 1)
       res.status(200).send();
       else
-      res.status(403).send();
+      res.status(403).send('Token Mismatch.');
   });
 }

@@ -3,19 +3,80 @@
 <% } %>
 
 <section class="mbr-section table1" id="table1-f" style="background-color: rgb(255, 255, 255); padding-top: 120px; padding-bottom: 120px;">
-
-
-
     <div class="container">
         <h3 class="mbr-section-title display-2">BOARD</h3>
     </div>
 
+    <div class="container">
+      <button type="button" class="btn boardPost" data-toggle="modal" data-target="#postModal">POST</button>
+    </div>
     <div class="container table-wrapper" data-search="true" search-text="Search:" info1-text="Showing" info2-text="entries" info3-text="(filtered from" info4-text="total entries)">
 
-        <table class="table" cellspacing="0" width="100%"><thead><tr><th>Name</th><th>Age</th><th>Date</th><th>Salary</th></tr></thead><tbody><tr><td>Jeanna Schmal</td><td>44</td><td>2016-10-17</td><td>$317.000</td></tr><tr><td>Caren Rials</td><td>35</td><td>2013-04-12</td><td>$445.500</td></tr><tr><td>Leon Rogol</td><td>66</td><td>2016-05-22</td><td>$152.558</td></tr><tr><td>Shala Barrera</td><td>70</td><td>2016-05-15</td><td>$459.146</td></tr></tbody></table>
-
+        <table class="table" id="boardTable" cellspacing="0" width="100%">
+          <thead><tr><th style="width:10%;">#</th><th style="width:40%;">Title</th><th style="width:20%;">Author</th><th style="width:30%;">Date</th></tr></thead>
+          <tbody></tbody>
+        </table>
+      <button type="button" class="btn boardPost" data-toggle="modal" data-target="#postModal">POST</button>
     </div>
+
 </section>
+
+<script>
+$(document).ready(function() {
+  if($('#boardTable tbody').html() === "")  // 뒤로 가기로 /board에 들어올 경우 계속 생성되는 것을 방지
+    requestBoardListAjax();
+
+    <% if(isViewer) { %>
+        $('#viewerModal').modal('show');
+    <% } %>
+  $('#viewerModal').on('hidden.bs.modal', function (e) {
+    history.pushState(null, null, '/board');
+  });
+});
+</script>
+
+<!-- Viewer Modal -->
+<div class="modal fade" id="viewerModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" data-show="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+        <h4 class="modal-title" id="modalTitle">
+          <% if(isViewer) { %>
+            <%- title %>
+          <% } %></h4>
+      </div>
+      <div class="modal-body" id="modalContent">
+        <% if(isViewer) { %>
+          <%- content %>
+        <% } %>
+      </div>
+      <div class="modal-footer">
+        <button type="button" id="deleteButton" class="btn btn-default">Delete</button>
+        <button type="button" id="correctButton" class="btn btn-primary">Correct</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Post Modal -->
+<div class="modal fade" id="postModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" data-show="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+        <input id="postTitle" class="modal-title form-control">
+      </div>
+      <div class="modal-body">
+        <textarea id="postContent" class="form-control" rows="15"></textarea>
+      </div>
+      <div class="modal-footer">
+        <button type="button" id="postSubmit" class="btn btn-primary">Post</button>
+      </div>
+    </div>
+  </div>
+</div>
+
 
 <% if(!req.header('X-PJAX')) { %>
   <%- include('footer.ejs'); %>

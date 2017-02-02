@@ -16,6 +16,7 @@ router.get('/list', boardCtrl.getList);
 
 // 단일 게시글 조회 (path variable을 사용)
 router.get('/:id', boardCtrl.getArticle);
+router.get('/:id/viewer', boardCtrl.getArticleWithViewer);
 router.put('/:id', securityApi.authCheckByToken, boardCtrl.updateArticle);
 router.delete('/:id', securityApi.authCheckByToken, boardCtrl.deleteArticle);
 

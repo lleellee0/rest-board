@@ -3,11 +3,7 @@ const router = express.Router();
 const usersCtrl = require('./users.controller')
 
 // 전체 조회
-router.get('/all', function(req, res, next) {
-  connection.query('SELECT id, user_id, nickname FROM users', function(err, result) {
-    res.json(result);
-  });
-});
+router.get('/list', usersCtrl.getUsersList);
 
 // 로그인 체크 (Query String으로 데이터 전달 필요)
 // parameter : ?user-id=유저아이디&password=유저비밀번호
